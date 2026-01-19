@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import type { Product } from '../types';
+import { Product } from '../types';
 
 interface ProductCardProps {
   product: Product;

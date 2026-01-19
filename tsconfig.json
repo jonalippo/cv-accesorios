@@ -21,6 +21,6 @@
     "allowJs": true,
     "esModuleInterop": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "index.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/index.tsx"],
   "exclude": ["node_modules", "dist"]
 }

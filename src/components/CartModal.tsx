@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { CartItem } from '../types';
+import { CartItem } from '../types';
 import { WHATSAPP_NUMBER, MP_ALIAS, CUENTA_DNI_ALIAS } from '../constants';
 
 interface CartModalProps {

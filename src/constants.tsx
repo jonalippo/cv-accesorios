@@ -1,5 +1,4 @@
-
-import type { Product } from './types';
+import { Product } from "./types";
 
 export const WHATSAPP_NUMBER = "+5492494618560";
 export const CONTACT_EMAIL = "jonalippo@gmail.com";
