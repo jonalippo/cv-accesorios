@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import type { Product, CartItem, ContactFormData } from './types';
-import { PRODUCTS, WHATSAPP_NUMBER, CONTACT_EMAIL } from './constants';
-import ProductCard from './components/ProductCard';
-import CartModal from './components/CartModal';
+import type { Product, CartItem, ContactFormData } from './src/types';
+import { PRODUCTS, WHATSAPP_NUMBER, CONTACT_EMAIL } from './src/constants';
+import ProductCard from './src/components/ProductCard';
+import CartModal from './src/components/CartModal';
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
