@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         {product.stock <= 3 && (
           <div className="absolute bottom-4 left-4">
             <span className="bg-red-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-tighter">
-              ¡Últimas {product.stock}!
+              ¡ Últimas {product.stock} !
             </span>
           </div>
         )}

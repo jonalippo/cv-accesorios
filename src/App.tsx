@@ -65,12 +65,14 @@ const App: React.FC = () => {
       <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md z-40 border-b border-gray-100">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveCategory('Home')}>
-            <div className="w-10 h-10 bg-pastel-pink rounded-full flex items-center justify-center text-white font-bold text-xl font-serif">CV</div>
-            <h1 className="text-xl md:text-2xl font-serif font-bold text-gray-800 hidden sm:block">CV Accesorios</h1>
+          <img 
+            src={"public/logo.png"} 
+            alt={"CV Accesorios Logo"} 
+            className="w-[60px] h-[60px] object-cover rounded-full" 
+          />
           </div>
-          
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium uppercase tracking-widest text-gray-500">
-            {['Home', 'Moños', 'Binchas', 'Hebillas'].map(cat => (
+            {['Home', 'Moños', 'Vinchas', 'Hebillas'].map(cat => (
               <button 
                 key={cat} 
                 onClick={() => setActiveCategory(cat)}
@@ -144,11 +146,14 @@ const App: React.FC = () => {
         </section>
       </main>
 
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4 text-center">
-          <div className="mb-8">
-            <div className="w-12 h-12 bg-pastel-pink rounded-full flex items-center justify-center text-white font-bold text-2xl font-serif mx-auto mb-4">CV</div>
-            <h3 className="text-xl font-serif tracking-widest uppercase">CV Accesorios</h3>
+          <div className="mb-8 flex justify-center cursor-pointer" onClick={() => setActiveCategory('Home')}>
+          <img 
+            src={"public/logo.png"} 
+            alt={"CV Accesorios Logo"} 
+            className="w-[80px] h-[80px] object-cover rounded-full" 
+          />
           </div>
           <div className="flex justify-center flex-wrap gap-8 mb-12">
             <button onClick={() => setActiveCategory('Moños')} className="text-gray-400 hover:text-pastel-pink transition-colors">Moños</button>

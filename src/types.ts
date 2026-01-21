@@ -2,7 +2,7 @@
 export interface Product {
     id: number;
     nombre: string;
-    categoria: 'Moños' | 'Binchas' | 'Hebillas' | 'Colitas';
+    categoria: 'Moños' | 'Vinchas' | 'Hebillas' | 'Colitas';
     descripcion: string;
     precio: number;
     stock: number;

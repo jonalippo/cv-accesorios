@@ -13,51 +13,69 @@ export const PRODUCTS: Product[] = [
     descripcion: "Moño artesanal de tela celeste con delicadas flores bordadas a mano.",
     precio: 2500,
     stock: 5,
-    imagen: "https://picsum.photos/seed/mono1/600/600"
+    imagen: "public/Captura de pantalla 2026-01-16 163503.png"
 },
 {
     id: 2,
-    nombre: "Bincha Nudo Satín",
-    categoria: "Binchas",
-    descripcion: "Bincha con diseño de nudo en satín rosa suave, ideal para eventos.",
+    nombre: "Moño verde navideño",
+    categoria: "Moños",
+    descripcion: "Moño verde con detalles dorados, ideal para las fiestas navideñas.",
     precio: 3200,
     stock: 3,
-    imagen: "https://picsum.photos/seed/bincha1/600/600"
+    imagen: "public/Captura de pantalla 2026-01-21 160940.png"
 },
 {
     id: 3,
-    nombre: "Hebilla Perla Elegante",
-    categoria: "Hebillas",
-    descripcion: "Hebilla metálica con aplicaciones de perlas sintéticas de alta calidad.",
+    nombre: "Moño Gris Bordado",
+    categoria: "Moños",
+    descripcion: "Moño gris con bordado de flores",
     precio: 1800,
     stock: 10,
-    imagen: "https://picsum.photos/seed/hebilla1/600/600"
+    imagen: "public/Captura de pantalla 2026-01-21 160856.png"
 },
 {
     id: 4,
-    nombre: "Moño Blanco Rosas",
+    nombre: "Moño Blanco bordado",	
     categoria: "Moños",
     descripcion: "Moño blanco de algodón con bordado de rosas borgoña.",
     precio: 2800,
     stock: 4,
-    imagen: "https://picsum.photos/seed/mono2/600/600"
+    imagen: "public/Captura de pantalla 2026-01-16 163450.png"
 },
 {
     id: 5,
-    nombre: "Colita Terciopelo Verde",
+    nombre: "Colita navideña",
     categoria: "Colitas",
-    descripcion: "Colita scrunchie de terciopelo verde bosque con bordado lunar.",
+    descripcion: "Colita roja con lazo, perfecta para las fiestas navideñas.",
     precio: 1200,
     stock: 15,
-    imagen: "https://picsum.photos/seed/colita1/600/600"
+    imagen: "public/Captura de pantalla 2026-01-21 160146.png"
 },
 {
     id: 6,
-    nombre: "Bincha Flores Secas",
-    categoria: "Binchas",
-    descripcion: "Bincha rígida forrada con detalles de flores preservadas.",
+    nombre: "Vincha Flores Secas",
+    categoria: "Vinchas",
+    descripcion: "Vincha rígida forrada con detalles de flores preservadas.",
     precio: 4500,
     stock: 2,
-    imagen: "https://picsum.photos/seed/bincha2/600/600"
+    imagen: "public/Captura de pantalla 2026-01-21 160010.png"
+},
+{
+    id: 7,
+    nombre: "Moño Colita blanca bordada",
+    categoria: "Colitas",
+    descripcion: "Colita blanca de algodón con bordado de rosas borgoña.",
+    precio: 1200,
+    stock: 15,
+    imagen: "public/Captura de pantalla 2026-01-21 160104.png"
+},
+{
+    id: 8,
+    nombre: "Vincha Flores Secas",
+    categoria: "Vinchas",
+    descripcion: "Vincha rígida forrada con detalles de flores preservadas.",
+    precio: 4500,
+    stock: 2,
+    imagen: "public/Captura de pantalla 2026-01-21 160010.png"
 }
 ];
