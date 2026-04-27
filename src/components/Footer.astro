@@ -1,0 +1,53 @@
+---
+// Footer.astro
+const currentYear = new Date().getFullYear();
+---
+
+<footer id="footer" class="bg-crema-fondo pt-16 pb-8 border-t border-borde-suave">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex flex-col items-center text-center space-y-8">
+      
+      <div class="flex flex-col items-center gap-4 reveal">
+        <div class="w-20 h-20 bg-white rounded-full p-2 shadow-soft border border-borde-suave">
+          <img src="/logo_cv-removebg.webp" alt="CV Accesorios Logo" class="w-full h-full object-contain" />
+        </div>
+        <div>
+          <h2 class="font-playfair text-3xl text-texto-p tracking-wide">CV Accesorios</h2>
+          <p class="font-nunito text-rosa-principal font-semibold uppercase tracking-[0.2em] text-xs mt-1">Hecho a mano con amor</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center gap-4 reveal">
+        <p class="font-nunito text-texto-s text-sm">Seguinos y consultanos por:</p>
+        <a 
+          href="https://www.instagram.com/c.v.accesorioss" 
+          target="_blank" 
+          class="group flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-soft hover:shadow-hover-card transition-all duration-300 border border-borde-suave"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rosa-principal transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+          </svg>
+          <span class="font-nunito font-bold text-texto-p">@c.v.accesorioss</span>
+        </a>
+      </div>
+
+      <button 
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="group flex flex-col items-center gap-2 hover:text-rosa-principal transition-colors duration-300 reveal"
+      >
+        <div class="w-10 h-10 border-2 border-borde-suave rounded-full flex items-center justify-center group-hover:border-rosa-principal transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+          </svg>
+        </div>
+        <span class="font-nunito text-xs uppercase tracking-widest font-bold">Volver al inicio</span>
+      </button>
+
+      <div class="w-full pt-8 border-t border-borde-suave/50 reveal">
+        <p class="font-nunito text-texto-s text-[10px] uppercase tracking-widest">
+          &copy; {currentYear} CV Accesorios. Todos los derechos reservados.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

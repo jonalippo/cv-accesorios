@@ -1,0 +1,53 @@
+---
+// Categorias.astro
+const categorias = [
+  { nombre: 'Moños', slug: 'monos', img: 'https://images.unsplash.com/photo-1611634568843-03e059530465?q=80&w=500&auto=format&fit=crop' },
+  { nombre: 'Colitas', slug: 'colitas', img: 'https://images.unsplash.com/photo-1576188973526-0e5d742240ad?q=80&w=500&auto=format&fit=crop' },
+  { nombre: 'Hebillas', slug: 'hebillas', img: 'https://images.unsplash.com/photo-1630154060232-4467c6999238?q=80&w=500&auto=format&fit=crop' },
+  { nombre: 'Escrunchis', slug: 'escrunchis', img: 'https://images.unsplash.com/photo-1589156191108-c762ff4b96ab?q=80&w=500&auto=format&fit=crop' },
+  { nombre: 'Bordados', slug: 'bordados', img: 'https://images.unsplash.com/photo-1511910849309-0dffb8c83749?q=80&w=500&auto=format&fit=crop' },
+];
+
+const categoriasDuplicadas = [...categorias, ...categorias];
+---
+
+<section id="categorias" class="py-20 bg-crema-fondo overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 mb-12 text-center reveal">
+    <h2 class="font-playfair text-3xl md:text-5xl text-texto-p mb-4 italic">Nuestras Categorías</h2>
+  </div>
+
+  <div class="w-full overflow-hidden group">
+    <div class="flex gap-8 w-max animate-infinite-scroll group-hover:pause-scroll">
+      {categoriasDuplicadas.map((cat, index) => (
+        <div class="flex-none w-64 md:w-80" aria-hidden={index >= categorias.length ? "true" : "false"}>
+          
+          {/* Envolvemos todo en un enlace */}
+          <a 
+            href={`/categorias/${cat.slug}`} 
+            class="group/item relative block overflow-hidden rounded-2xl aspect-[3/4] shadow-soft border border-borde-suave cursor-pointer"
+          >
+            <img 
+              src={cat.img} 
+              alt={cat.nombre} 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
+              loading="lazy"
+            />
+            
+            {/* Overlay con nombre */}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6 transition-opacity group-hover/item:from-rosa-principal/60">
+              <h3 class="font-playfair text-2xl text-white font-bold tracking-wide">{cat.nombre}</h3>
+            </div>
+
+            {/* Indicador visual de "Ver más" */}
+            <div class="absolute top-4 right-4 opacity-0 group-hover/item:opacity-100 transition-opacity">
+              <span class="bg-white/20 backdrop-blur-md text-white text-xs p-2 rounded-full border border-white/40">
+                Explorar →
+              </span>
+            </div>
+          </a>
+
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

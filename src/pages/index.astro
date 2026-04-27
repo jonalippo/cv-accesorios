@@ -1,17 +1,24 @@
 ---
-
+import Categorias from '../components/Categorias.astro';
+import Footer from '../components/Footer.astro';
+import GaleriaProductos from '../components/GaleriaProductos.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import PasosCompra from '../components/PasosCompra.astro';
+import SobreProductos from '../components/SobreProductos.astro';
+import Testimonios from '../components/Testimonios.astro';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="CV Accesorios | Inicio">
+	<Header/>
+	<main>
+		<Hero/>
+		<SobreProductos/>
+		<GaleriaProductos />
+		<Categorias/>		
+		<PasosCompra/>
+		<Testimonios/>
+	</main>
+	<Footer/>
+</Layout>

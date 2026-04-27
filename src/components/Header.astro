@@ -1,0 +1,71 @@
+---
+const categoriasRutas = {
+  'Moños': '/categorias/moños',
+  'Colitas': '/categorias/colitas',
+  'Hebillas': '/categorias/hebillas',
+  'Escrunchis': '/categorias/escrunchis',
+  'Bordados': '/categorias/bordados',
+  'Otros': '/categorias/otros'
+};
+---
+
+<header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-crema-fondo backdrop-blur-md shadow-soft h-26 flex items-center">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:w-full">
+    <div class="flex justify-around items-center h-20">
+      
+      <div class="flex-shrink-0 flex items-center bg-transparent">
+        {/* Cambiamos #inicio por / para que siempre vuelva a la home */}
+        <a href="/" class="flex items-center gap-2 group bg-transparent">
+          <img src="/logo_cv-removebg.webp" alt="CV Accesorios Logo" class="w-20 h-20 object-contain shadow-soft group-hover:scale-110 transition-transform bg-white rounded-full p-1">
+        </a>
+      </div>
+
+      <nav class="hidden md:flex space-x-8 items-center">
+        <a href="/" class="text-texto-p hover:text-rosa-principal font-nunito font-semibold transition-colors">Inicio</a>
+        
+        <div class="relative group">
+          <button class="text-texto-p group-hover:text-rosa-principal font-nunito font-semibold flex items-center gap-1 transition-colors cursor-pointer">
+            Categorías
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          <div class="absolute left-0 mt-2 w-48 bg-white border border-borde-suave rounded-xl shadow-soft opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+            <div class="py-2">
+              {Object.entries(categoriasRutas).map(([nombre, ruta]) => (
+                <a href={ruta} class="block px-4 py-2 text-sm text-texto-p hover:bg-crema-fondo hover:text-rosa-principal transition-colors font-nunito">
+                  {nombre}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <a href="/#nosotros" class="text-texto-p hover:text-rosa-principal font-nunito font-semibold transition-colors">Nosotros</a>
+        
+        <a href="/#footer" class="bg-rosa-principal text-white px-6 py-2 rounded-full font-nunito font-bold hover:bg-verde-hoja hover:shadow-hover-card transition-all duration-300 shadow-soft">
+          Contacto
+        </a>
+      </nav>
+
+      {/* Menú Mobile y Scripts se mantienen igual... */}
+      <div class="md:hidden flex items-center">
+        <button id="menu-btn" class="text-texto-p focus:outline-none p-2" aria-label="Abrir menú">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden border-b border-borde-suave animate-fade-in bg-white">
+    <div class="px-4 pt-2 pb-6 space-y-2 shadow-inner">
+      <a href="/" class="block py-3 text-texto-p font-nunito border-b border-crema-fondo">Inicio</a>
+      <a href="/#categorias" class="block py-3 text-texto-p font-nunito border-b border-crema-fondo">Categorías</a>
+      <a href="/#nosotros" class="block py-3 text-texto-p font-nunito border-b border-crema-fondo">Nosotros</a>
+      <a href="/#footer" class="block py-3 text-rosa-principal font-bold font-nunito">Contacto</a>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,51 @@
+---
+// Hero.astro
+---
+
+<section id="inicio" class="relative h-[90vh] w-full flex items-center justify-center overflow-hidden">
+  
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="/Captura de pantalla 2026-04-24 092655.png" 
+        alt="Textura artesanal delicada" 
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
+    </div>
+  
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <h1 class="font-playfair text-4xl md:text-7xl text-crema-fondo mb-6 drop-shadow-lg">
+        Accesorios hechos con amor
+      </h1>
+      
+      <p class="font-nunito text-lg md:text-2xl text-crema-fondo/90 mb-10 max-w-2xl mx-auto leading-relaxed">
+        Moños, colitas y más — diseños únicos, cosidos y bordados a mano para resaltar tu estilo natural.
+      </p>
+  
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="#categorias" 
+          class="bg-rosa-principal text-white px-8 py-4 rounded-full font-nunito font-bold text-lg hover:bg-rosa-claro hover:scale-105 transition-all duration-300 shadow-lg"
+        >
+          Ver categorías
+        </a>
+        <a 
+          href="https://www.instagram.com/c.v.accesorioss" 
+          target="_blank"
+          class="bg-white/20 backdrop-blur-md border-2 border-white text-white px-8 py-4 rounded-full font-nunito font-bold text-lg hover:bg-white hover:text-rosa-principal transition-all duration-300"
+        >
+          Seguinos en Instagram
+        </a>
+      </div>
+    </div>
+  
+    <a 
+      href="#nosotros" 
+      class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center z-20 cursor-pointer group no-underline"
+    >
+      <span class="text-crema-fondo uppercase italic text-[12px]">Quiero ver más</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-crema-fondo" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7" />
+      </svg>
+    </a>
+  </section>

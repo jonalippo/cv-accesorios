@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-crema-fondo: #FDEFED;
+  --color-rosa-principal: #F2A7A0;
+  --color-rosa-claro: #FAD4D0;
+  --color-verde-hoja: #6B8F5E;
+  --color-texto-p: #3D3D3D;
+  --color-texto-s: #888888;
+  --color-borde-suave: #E8DDD8;
+
+  --font-playfair: "Playfair Display", serif;
+  --font-nunito: "Nunito", sans-serif;
+
+  /* --- Keyframes (Van acá) --- */
+  @keyframes scroll-infinito {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-50% - 1rem)); }
+  }
+}
+
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  /* Cambiamos de 30s a 60s para que vaya más lento */
+  animation: scroll-infinito 60s linear infinite; 
+}
+
+.pause-scroll {
+  animation-play-state: paused;
+}
+
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease-out;
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #FDFAF7; }
+::-webkit-scrollbar-thumb { background: #F2A7A0; border-radius: 10px; }

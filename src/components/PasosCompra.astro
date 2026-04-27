@@ -1,0 +1,43 @@
+---
+// PasosCompra.astro
+const pasos = [
+  { 
+    numero: "01", 
+    titulo: "Elegí tus favoritos", 
+    desc: "Explorá nuestro catálogo y seleccioná los accesorios que más te gusten." 
+  },
+  { 
+    numero: "02", 
+    titulo: "Consultanos", 
+    desc: "Escribinos por Instagram o WhatsApp para consultar stock y detalles." 
+  },
+  { 
+    numero: "03", 
+    titulo: "Coordinamos", 
+    desc: "Elegís el método de envío o retiro y ¡listo! Ya son tuyos." 
+  }
+];
+---
+
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 reveal">
+      <h2 class="font-playfair text-3xl md:text-5xl text-texto-p mb-4 italic">¿Cómo comprar?</h2>
+      <p class="font-nunito text-texto-s">Tres simples pasos para tener tus accesorios con vos.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      {pasos.map((paso) => (
+        <div class="relative p-8 bg-white rounded-3xl shadow-soft border border-borde-suave reveal group hover:border-rosa-principal transition-colors duration-300">
+          <span class="absolute -top-4 -left-4 w-12 h-12 bg-rosa-principal text-white flex items-center justify-center rounded-full font-playfair text-xl font-bold shadow-lg group-hover:scale-110 transition-transform">
+            {paso.numero}
+          </span>
+          <h3 class="font-playfair text-2xl text-texto-p mb-4 mt-2">{paso.titulo}</h3>
+          <p class="font-nunito text-texto-s leading-relaxed">
+            {paso.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

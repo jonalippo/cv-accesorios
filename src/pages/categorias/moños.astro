@@ -1,0 +1,138 @@
+---
+// src/pages/categorias/monos.astro
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const productosMonos = [
+  { 
+    id: 1, 
+    nombre: 'Moño Velvet Rose', 
+    etiqueta: 'Terciopelo',
+    img: '/Captura de pantalla 2026-04-24 092655.png',
+    descripcion: 'Bordado a mano con hilo de seda.'
+  },
+  { 
+    id: 2, 
+    nombre: 'Lino Natural XL', 
+    etiqueta: 'Lino', 
+    img: '/Captura de pantalla 2026-04-24 101114.png',
+    descripcion: 'Textura ligera y caída natural.'
+  },
+  { 
+    id: 1, 
+    nombre: 'Moño Velvet Rose', 
+    etiqueta: 'Terciopelo',
+    img: '/Captura de pantalla 2026-04-24 092655.png',
+    descripcion: 'Bordado a mano con hilo de seda.'
+  },
+  { 
+    id: 2, 
+    nombre: 'Lino Natural XL', 
+    etiqueta: 'Lino', 
+    img: '/Captura de pantalla 2026-04-24 101114.png',
+    descripcion: 'Textura ligera y caída natural.'
+  }, { 
+    id: 1, 
+    nombre: 'Moño Velvet Rose', 
+    etiqueta: 'Terciopelo',
+    img: '/Captura de pantalla 2026-04-24 092655.png',
+    descripcion: 'Bordado a mano con hilo de seda.'
+  },
+  { 
+    id: 2, 
+    nombre: 'Lino Natural XL', 
+    etiqueta: 'Lino', 
+    img: '/Captura de pantalla 2026-04-24 101114.png',
+    descripcion: 'Textura ligera y caída natural.'
+  },
+];
+---
+
+<Layout title="Moños | CV Accesorios">
+  <Header />
+  
+  <main class="pt-32 pb-20 bg-crema-fondo/30">
+    <header class="max-w-7xl mx-auto px-4 mb-16 reveal">
+      <nav class="flex items-center gap-2 text-texto-s text-xs uppercase tracking-widest mb-4">
+        <a href="/" class="hover:text-rosa-principal">Inicio</a>
+        <span>/</span>
+        <span class="text-texto-p font-bold">Moños</span>
+      </nav>
+      <h1 class="font-playfair text-5xl md:text-7xl text-texto-p mb-6">Colección Moños</h1>
+      <p class="font-nunito text-texto-s text-lg max-w-2xl leading-relaxed">
+        Explorá nuestra variedad de moños artesanales. Desde el suave terciopelo hasta el lino rústico, cada pieza es diseñada y bordada individualmente.
+      </p>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        {productosMonos.map((prod) => (
+          <div class="group reveal">
+            <div class="relative overflow-hidden rounded-3xl aspect-[4/5] bg-white shadow-soft border border-borde-suave">
+              <img 
+                src={prod.img} 
+                alt={prod.nombre} 
+                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div class="absolute top-4 left-4">
+                <span class="bg-white/90 backdrop-blur-md text-texto-p px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                  {prod.etiqueta}
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-2">
+                <h3 class="font-playfair text-2xl text-texto-p group-hover:text-rosa-principal transition-colors">
+                  {prod.nombre}
+                </h3>
+              <p class="font-nunito text-texto-s text-sm italic">
+                {prod.descripcion}
+              </p>
+              
+              <button class="w-full mt-4 border border-borde-suave py-3 rounded-full font-nunito font-bold text-sm uppercase tracking-widest hover:bg-rosa-principal hover:text-white transition-all duration-300">
+                Consultar por Instagram
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-4 mt-32 text-center reveal">
+      <div class="bg-white p-12 rounded-[4rem] shadow-soft border border-borde-suave relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-rosa-claro/20 rounded-full blur-3xl"></div>
+        <h2 class="font-playfair text-3xl md:text-4xl text-texto-p mb-6 italic">¿Buscás algo personalizado?</h2>
+        <p class="font-nunito text-texto-s mb-8 max-w-lg mx-auto">
+          Si necesitás un diseño con un bordado específico o en una tela especial para un evento, escribinos.
+        </p>
+        <a 
+          href="https://www.instagram.com/c.v.accesorioss" 
+          target="_blank"
+          class="inline-block bg-rosa-principal text-white px-10 py-4 rounded-full font-nunito font-bold hover:shadow-lg transition-all"
+        >
+          Pedir diseño exclusivo
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+    const observerOptions = {
+      threshold: 0.1
+    };
+  
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+  
+    // Buscamos todos los elementos con la clase reveal y los observamos
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>

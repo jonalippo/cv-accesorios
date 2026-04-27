@@ -1,0 +1,34 @@
+---
+// Testimonios.astro
+const testimonios = [
+  {
+    texto: "Los moños son hermosos y la terminación es impecable. Se nota el amor que le ponen a cada detalle.",
+    autor: "Sofía G."
+  }
+];
+---
+
+<section class="py-24 bg-white overflow-hidden">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <div class="reveal">
+      <svg class="w-12 h-12 text-rosa-claro mx-auto mb-8 opacity-50" fill="currentColor" viewBox="0 0 32 32">
+        <path d="M10 8v8H6c0 4.4 3.6 8 8 8v4c-6.6 0-12-5.4-12-12V8h8zm18 0v8h-4c0 4.4 3.6 8 8 8v4c-6.6 0-12-5.4-12-12V8h8z"></path>
+      </svg>
+      
+      <h2 class="font-playfair text-3xl md:text-4xl text-texto-p mb-10 italic">Lo que dicen nuestras clientas</h2>
+      
+      {testimonios.map((t) => (
+        <div class="space-y-6">
+          <p class="font-nunito text-2xl md:text-3xl text-texto-p italic leading-relaxed px-4">
+            "{t.texto}"
+          </p>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-[1px] bg-rosa-principal"></div>
+            <span class="font-nunito font-bold text-rosa-principal uppercase tracking-widest">{t.autor}</span>
+            <div class="w-12 h-[1px] bg-rosa-principal"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
