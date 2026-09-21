@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import AboutMe from '../components/AboutMe.astro';
+import ContactForm from '../components/ContactForm.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import Footer from '../components/Footer.astro';
+
+import { productos } from '../data/productos.js';
+
+// Define las rutas estáticas válidas en tiempo de build
+export async function getStaticPaths() {
+  const categoriasValidas = [
+    { 
+      slug: 'monos', 
+      nombre: 'Moños Artesanales', 
+      descripcion: 'Explorá nuestra colección exclusiva de moños confeccionados a mano en telas seleccionadas.' 
+    },
+    { 
+      slug: 'binchas', 
+      nombre: 'Vinchas Elegantes', 
+      descripcion: 'Descubrí nuestras vinchas acolchadas, trenzadas y con perlas diseñadas para un uso cómodo y chic.' 
+    },
+    { 
+      slug: 'hebillas', 
+      nombre: 'Hebillas y Clips', 
+      descripcion: 'Detalles delicados para sujetar tu pelo con elegancia y firmeza en cualquier ocasión.' 
+    }
+  ];
+
+  return categoriasValidas.map((cat) => ({
+    params: { categoria: cat.slug },
+    props: { 
+      nombreCategoria: cat.nombre,
+      descripcionCategoria: cat.descripcion,
+      productosFiltrados: productos.filter((p) => p.categoria === cat.slug)
+    }
+  }));
+}
+
+const { categoria } = Astro.params;
+const { nombreCategoria, descripcionCategoria, productosFiltrados } = Astro.props;
+---
+
+<Layout 
+  title={`${nombreCategoria} | CV Accesorios`}
+  description={descripcionCategoria}
+>
+  <Header />
+
+  <main id="contenido-principal" class="flex-grow">
+    <Hero 
+      title={nombreCategoria}
+      subtitle={descripcionCategoria}
+    />
+    <ProductGrid 
+      productos={productosFiltrados} 
+      titulo={`Colección: ${nombreCategoria}`} 
+    />
+    <AboutMe />
+    <ContactForm />
+  </main>
+  <WhatsAppButton />
+  <Footer />
+</Layout>

@@ -1,0 +1,178 @@
+---
+const whatsappNumber = "542494363270";
+const instagramUser = "@c.v.accesorios";
+const instagramUrl = "https://instagram.com/c.v.accesorios";
+---
+
+<section id="contacto" class="py-16 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto w-full">
+  <div class="bg-crema rounded-3xl p-6 sm:p-10 border border-rosa/40 shadow-sm">
+
+    <div class="text-center space-y-3 mb-8">
+      <h2 class="font-serif text-3xl font-semibold text-texto">
+        ¿Tenés alguna consulta o querés un pedido personalizado?
+      </h2>
+      <p class="text-sm text-texto/80">
+        Escribinos directamente. Al hacer clic en enviar se abrirá WhatsApp o podrás copiar el mensaje para enviarlo por Instagram.
+      </p>
+    </div>
+
+    <div id="form-success" class="hidden mb-6 p-4 rounded-2xl bg-rosa/40 border border-rosa-oscuro/30 text-texto text-sm text-center">
+      ✨ <strong>¡Gracias por tu mensaje!</strong> Te estamos redirigiendo para completar el envío...
+    </div>
+
+    <form id="contact-form" data-phone={whatsappNumber} data-ig-url={instagramUrl} class="space-y-5">
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="nombre" class="block text-xs font-medium text-texto mb-1.5">Nombre *</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            required
+            placeholder="Tu nombre"
+            class="w-full px-4 py-3 rounded-xl bg-crema border border-rosa/60 focus:border-rosa-oscuro text-sm text-texto placeholder:text-texto/40 focus:outline-none transition-colors"
+          />
+        </div>
+        <div>
+          <label for="apellido" class="block text-xs font-medium text-texto mb-1.5">Apellido *</label>
+          <input
+            type="text"
+            id="apellido"
+            name="apellido"
+            required
+            placeholder="Tu apellido"
+            class="w-full px-4 py-3 rounded-xl bg-crema border border-rosa/60 focus:border-rosa-oscuro text-sm text-texto placeholder:text-texto/40 focus:outline-none transition-colors"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="instagram" class="block text-xs font-medium text-texto mb-1.5">Tu usuario de Instagram (opcional)</label>
+        <input
+          type="text"
+          id="instagram"
+          name="instagram"
+          placeholder="@tuusuario"
+          class="w-full px-4 py-3 rounded-xl bg-crema border border-rosa/60 focus:border-rosa-oscuro text-sm text-texto placeholder:text-texto/40 focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div>
+        <label for="mensaje" class="block text-xs font-medium text-texto mb-1.5">Mensaje o consulta *</label>
+        <textarea
+          id="mensaje"
+          name="mensaje"
+          rows="4"
+          required
+          placeholder="Hola! Quisiera consultar por..."
+          class="w-full px-4 py-3 rounded-xl bg-crema border border-rosa/60 focus:border-rosa-oscuro text-sm text-texto placeholder:text-texto/40 focus:outline-none transition-colors resize-none"
+        ></textarea>
+      </div>
+
+      <div class="pt-2 flex flex-col sm:flex-row gap-3">
+        
+        <button
+          type="submit"
+          id="btn-whatsapp"
+          class="w-full sm:w-1/2 py-3.5 px-6 rounded-full bg-rosa-oscuro text-crema text-sm font-medium hover:bg-rosa-oscuro/90 transition-all flex items-center justify-center gap-2 shadow-sm focus:outline-none"
+        >
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span>Enviar por WhatsApp</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-instagram"
+          class="w-full sm:w-1/2 py-3.5 px-6 rounded-full bg-rosa/40 text-texto border border-rosa-oscuro/40 text-sm font-medium hover:bg-rosa/70 transition-all flex items-center justify-center gap-2 focus:outline-none"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span>Copiar y abrir Instagram</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<script>
+    function setupContactForm() {
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      const successMsg = document.getElementById('form-success');
+      const btnInstagram = document.getElementById('btn-instagram');
+  
+      if (!form) return;
+  
+      // Asignamos un valor por defecto tipo string o hacemos fallback para evitar el 'null'
+      const phone = form.getAttribute('data-phone') || '';
+      const igUrl = form.getAttribute('data-ig-url') || 'https://instagram.com';
+  
+      // Función auxiliar para construir el texto estructurado
+      const buildMessageText = () => {
+        const nombreInput = document.getElementById('nombre') as HTMLInputElement | null;
+        const apellidoInput = document.getElementById('apellido') as HTMLInputElement | null;
+        const instagramInput = document.getElementById('instagram') as HTMLInputElement | null;
+        const mensajeInput = document.getElementById('mensaje') as HTMLTextAreaElement | null;
+  
+        const nombre = nombreInput?.value.trim() || '';
+        const apellido = apellidoInput?.value.trim() || '';
+        const instagram = instagramInput?.value.trim() || '';
+        const mensaje = mensajeInput?.value.trim() || '';
+  
+        return `Hola! Soy ${nombre} ${apellido}${instagram ? ` (${instagram})` : ''}.\nConsulta desde la web de CV Accesorios:\n\n${mensaje}`;
+      };
+  
+      // 1. Envío mediante WhatsApp
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const text = buildMessageText();
+        const encodedText = encodeURIComponent(text);
+        const waUrl = `https://wa.me/${phone}?text=${encodedText}`;
+  
+        if (successMsg) successMsg.classList.remove('hidden');
+  
+        setTimeout(() => {
+          window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }, 500);
+      });
+  
+      // 2. Copiar y abrir Instagram
+      if (btnInstagram) {
+        btnInstagram.addEventListener('click', () => {
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+  
+          const text = buildMessageText();
+  
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              if (successMsg) {
+                successMsg.innerHTML = '✨ <strong>¡Mensaje copiado al portapapeles!</strong> Redirigiendo a Instagram...';
+                successMsg.classList.remove('hidden');
+              }
+  
+              setTimeout(() => {
+                window.open(igUrl, '_blank', 'noopener,noreferrer');
+              }, 800);
+            }).catch(() => {
+              window.open(igUrl, '_blank', 'noopener,noreferrer');
+            });
+          } else {
+            window.open(igUrl, '_blank', 'noopener,noreferrer');
+          }
+        });
+      }
+    }
+  
+    setupContactForm();
+    document.addEventListener('astro:page-load', setupContactForm);
+  </script>

@@ -1,0 +1,94 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = "Detalles únicos hechos a mano con amor",
+  subtitle = "Descubrí nuestra colección artesanal de moños, vinchas y hebillas diseñadas para resaltar tu estilo diario con elegancia y delicadeza."
+} = Astro.props;
+---
+
+<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-crema py-16 px-4 sm:px-6 lg:px-8">
+  <div class="absolute inset-0 z-0 overflow-hidden">
+    <img 
+      src="/productos/mono-rosa-saten.jpg" 
+      alt="Hero CV Accesorios" 
+      class="w-full h-full object-cover object-center hero-bg-zoom filter brightness-[0.92] contrast-[0.98]"
+      width="1920"
+      height="1080"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-crema/95 via-crema/80 to-rosa/40 backdrop-blur-[2px]"></div>
+  </div>
+
+
+  <div class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
+    
+    <span class="inline-block px-4 py-1.5 mb-6 text-xs sm:text-sm font-medium tracking-widest uppercase text-texto bg-rosa/60 backdrop-blur-sm rounded-full border border-rosa-oscuro/30 hero-fade-up hero-delay-1">
+      Hecho a mano en Argentina
+    </span>
+
+    <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold text-texto leading-tight sm:leading-tight mb-6 max-w-3xl hero-fade-up hero-delay-2">
+      {title}
+    </h1>
+
+    <p class="text-base sm:text-lg text-texto/80 font-normal max-w-2xl mb-8 leading-relaxed hero-fade-up hero-delay-3">
+      {subtitle}
+    </p>
+
+    <div class="hero-fade-up hero-delay-4">
+      <a 
+        href="#catalogo" 
+        class="inline-flex items-center gap-2 bg-rosa-oscuro text-crema font-medium px-8 py-4 rounded-full shadow-md hover:bg-rosa-oscuro/90 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none"
+      >
+        <span>Ver catálogo</span>
+        <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Animación para la imagen de fondo */
+  @keyframes heroBgZoom {
+    0% {
+      transform: scale(1.15);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Animación para la entrada escalonada del texto */
+  @keyframes heroFadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-bg-zoom {
+    animation: heroBgZoom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-fade-up {
+    opacity: 0;
+    animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-delay-1 { animation-delay: 0.2s; }
+  .hero-delay-2 { animation-delay: 0.4s; }
+  .hero-delay-3 { animation-delay: 0.6s; }
+  .hero-delay-4 { animation-delay: 0.8s; }
+</style>

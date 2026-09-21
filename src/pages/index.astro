@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import AboutMe from '../components/AboutMe.astro';
+import ContactForm from '../components/ContactForm.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import Footer from '../components/Footer.astro';
+
+import { productos } from '../data/productos.js';
+---
+
+<Layout 
+  title="Catálogo Oficial | Moños, Vinchas y Hebillas Artesanales"
+  description="Descubrí el catálogo de CV Accesorios. Moños, vinchas, hebillas y accesorios para el pelo hechos a mano en Argentina con un estilo elegante y femenino."
+>
+  <Header />
+  
+  <main id="contenido-principal" class="flex-grow">
+    <Hero />
+    <ProductGrid 
+      productos={productos} 
+      titulo="Nuestro Catálogo Completo" 
+    />
+    <AboutMe />
+    <ContactForm />
+  </main>
+  <WhatsAppButton />
+  <Footer />
+</Layout>

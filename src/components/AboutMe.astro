@@ -1,0 +1,63 @@
+---
+---
+
+<section id="sobre-mi" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="about-me-container opacity-0 translate-y-8 transition-all duration-700 ease-out bg-rosa/20 rounded-3xl p-6 sm:p-10 lg:p-12 border border-rosa/30 flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+
+      <div class="w-full md:w-1/2 aspect-square max-w-md rounded-2xl overflow-hidden shadow-sm border border-rosa/40">
+        <img 
+          src="/sobre-mi.jpg" 
+          alt="Creadora de CV Accesorios" 
+          width="500" 
+          height="500" 
+          loading="lazy" 
+          class="w-full h-full object-cover object-center"
+          onerror="this.src='https://via.placeholder.com/500x500/F7D6DF/4A3F44?text=Sobre+M%C3%AD'"
+        />
+      </div>
+  
+      <div class="w-full md:w-1/2 space-y-4 text-center md:text-left">
+        <span class="text-xs font-semibold tracking-widest uppercase text-rosa-oscuro">
+          Detrás de la marca
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-texto">
+          Hola, soy parte de CV Accesorios
+        </h2>
+        <div class="w-12 h-0.5 bg-rosa-oscuro mx-auto md:mx-0 rounded-full"></div>
+        
+        <p class="text-texto/85 text-sm sm:text-base leading-relaxed pt-2">
+          CV Accesorios nació de la pasión por crear piezas únicas y delicadas que transforman un peinado cotidiano en un detalle especial. Cada moño, vincha y hebilla está hecho a mano de forma artesanal en Argentina, cuidando cada costura, textura y combinación de tonos pastel.
+        </p>
+        
+        <p class="text-texto/85 text-sm sm:text-base leading-relaxed">
+          Creemos en la belleza de lo hecho con dedicación y amor. Queremos acompañarte en tus días especiales y en tu rutina diaria con accesorios cómodos, duraderos y llenos de estilo.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <script>
+    function setupAboutMeObserver() {
+      const container = document.querySelector('.about-me-container');
+      if (!container) return;
+  
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove('opacity-0', 'translate-y-8');
+              entry.target.classList.add('opacity-100', 'translate-y-0');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+  
+        observer.observe(container);
+      } else {
+        container.classList.remove('opacity-0', 'translate-y-8');
+      }
+    }
+  
+    setupAboutMeObserver();
+    document.addEventListener('astro:page-load', setupAboutMeObserver);
+  </script>
