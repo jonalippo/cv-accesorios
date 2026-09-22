@@ -7,8 +7,14 @@ import AboutMe from '../components/AboutMe.astro';
 import ContactForm from '../components/ContactForm.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import Footer from '../components/Footer.astro';
+import { supabase } from '../lib/supabase';
+import type { Producto } from '../types/producto';
 
-import { productos } from '../data/productos.js';
+const { data, error } = await supabase
+  .from('productos')
+  .select('*');
+  // Si 'data' es null o hay un error, asignamos un array vacío []
+const productos: Producto[] = (data || []) as Producto[];
 ---
 
 <Layout 
@@ -20,7 +26,7 @@ import { productos } from '../data/productos.js';
   <main id="contenido-principal" class="flex-grow">
     <Hero />
     <ProductGrid 
-      productos={productos} 
+      productos = {productos} 
       titulo="Nuestro Catálogo Completo" 
     />
     <AboutMe />

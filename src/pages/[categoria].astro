@@ -7,11 +7,17 @@ import AboutMe from '../components/AboutMe.astro';
 import ContactForm from '../components/ContactForm.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import Footer from '../components/Footer.astro';
+import { supabase } from '../lib/supabase';
+import type { Producto } from '../types/producto';
 
-import { productos } from '../data/productos.js';
-
-// Define las rutas estáticas válidas en tiempo de build
+// Define las rutas estáticas válidas en tiempo de build consultando Supabase
 export async function getStaticPaths() {
+  // 1. Traemos todos los productos desde la base de datos
+  const { data, error } = await supabase
+    .from('productos')
+    .select('*');
+
+  const productos: Producto[] = (data || []) as Producto[];
   const categoriasValidas = [
     { 
       slug: 'monos', 
@@ -19,7 +25,7 @@ export async function getStaticPaths() {
       descripcion: 'Explorá nuestra colección exclusiva de moños confeccionados a mano en telas seleccionadas.' 
     },
     { 
-      slug: 'binchas', 
+      slug: 'vinchas', 
       nombre: 'Vinchas Elegantes', 
       descripcion: 'Descubrí nuestras vinchas acolchadas, trenzadas y con perlas diseñadas para un uso cómodo y chic.' 
     },
@@ -27,9 +33,15 @@ export async function getStaticPaths() {
       slug: 'hebillas', 
       nombre: 'Hebillas y Clips', 
       descripcion: 'Detalles delicados para sujetar tu pelo con elegancia y firmeza en cualquier ocasión.' 
+    },
+    { 
+      slug: 'scrunchies', 
+      nombre: 'Scrunchies', 
+      descripcion: 'Colección de scrunchies en telas suaves y colores vibrantes para complementar tu estilo.' 
     }
   ];
 
+  // 3. Mapeamos las rutas filtrando los productos de Supabase
   return categoriasValidas.map((cat) => ({
     params: { categoria: cat.slug },
     props: { 
@@ -40,7 +52,6 @@ export async function getStaticPaths() {
   }));
 }
 
-const { categoria } = Astro.params;
 const { nombreCategoria, descripcionCategoria, productosFiltrados } = Astro.props;
 ---
 

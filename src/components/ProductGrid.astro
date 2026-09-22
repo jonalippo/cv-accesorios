@@ -1,22 +1,13 @@
 ---
 import ProductCard from './ProductCard.astro';
-
-interface Producto {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  categoria: string;
-  imagen: string;
-  destacado?: boolean;
-}
+import type { Producto } from '../types/producto';
 
 interface Props {
   productos: Producto[];
   titulo?: string;
 }
 
-const { productos, titulo = "Nuestro Catálogo" } = Astro.props;
+const { productos, titulo = "Productos" } = Astro.props;
 ---
 
 <section id="catalogo" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -34,7 +25,6 @@ const { productos, titulo = "Nuestro Catálogo" } = Astro.props;
           id={prod.id}
           nombre={prod.nombre}
           descripcion={prod.descripcion}
-          precio={prod.precio}
           categoria={prod.categoria}
           imagen={prod.imagen}
           destacado={prod.destacado}

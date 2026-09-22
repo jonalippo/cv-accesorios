@@ -3,22 +3,12 @@ interface Props {
   id: string;
   nombre: string;
   descripcion: string;
-  precio: number;
   categoria: string;
   imagen: string;
   destacado?: boolean;
 }
 
-const { nombre, descripcion, precio, imagen } = Astro.props;
-
-// Formatear precio a Pesos Argentinos (ARS)
-const precioFormateado = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-  maximumFractionDigits: 0
-}).format(precio);
-
-
+const { nombre, descripcion,imagen } = Astro.props;
 const igDirectUrl = "https://ig.me/m/c.v.accesorios";
 const igFallbackUrl = "https://instagram.com/c.v.accesorios";
 ---
@@ -48,10 +38,6 @@ const igFallbackUrl = "https://instagram.com/c.v.accesorios";
     </div>
 
     <div class="pt-2 border-t border-rosa/20 flex items-center justify-between mt-auto">
-      <span class="font-sans text-base font-semibold text-texto">
-        {precioFormateado}
-      </span>
-
       <a
         href={igDirectUrl}
         target="_blank"
