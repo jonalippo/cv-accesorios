@@ -38,7 +38,7 @@ const productosJson = JSON.stringify(productosData || []);
     </a>
 
     <!-- Navegación Desktop + Buscador -->
-    <div class="hidden md:flex items-center gap-6 lg:gap-8">
+    <div class="hidden md:flex items-center justify-between gap-6 lg:gap-24">
       <nav class="flex items-center gap-6 lg:gap-8">
         {navLinks.map((link) => {
           const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));

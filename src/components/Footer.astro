@@ -1,11 +1,13 @@
 ---
 const currentYear = new Date().getFullYear();
+const pathname = new URL(Astro.url).pathname;
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/monos', label: 'Moños' },
   { href: '/vinchas', label: 'Vinchas' },
-  { href: '/hebillas', label: 'Hebillas' }
+  { href: '/hebillas', label: 'Hebillas' },
+  { href: '/scrunchies', label: 'Scrunchies' }
 ];
 ---
 
@@ -30,11 +32,20 @@ const navLinks = [
       </div>
 
       <nav class="flex flex-wrap justify-center gap-6">
-        {navLinks.map((link) => (
-          <a href={link.href} class="text-sm text-texto/80 hover:text-rosa-oscuro transition-colors">
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+          return (
+          <a 
+          href={link.href} class="text-sm text-texto/80 hover:text-rosa-oscuro transition-colors"
+          class={`text-sm font-medium transition-colors duration-200 hover:text-rosa-oscuro relative py-1 ${
+                isActive ? 'text-rosa-oscuro font-semibold' : 'text-texto/80'
+              }`}>
             {link.label}
+            {isActive && (
+                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-rosa-oscuro rounded-full" />
+              )}
           </a>
-        ))}
+        )})}
       </nav>
 
       <div class="flex flex-col items-center gap-4">

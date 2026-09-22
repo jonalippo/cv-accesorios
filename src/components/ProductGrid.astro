@@ -5,16 +5,18 @@ import type { Producto } from '../types/producto';
 interface Props {
   productos: Producto[];
   titulo?: string;
+  text?: string;
 }
 
-const { productos, titulo = "Productos" } = Astro.props;
+const { productos, titulo = "Productos", text } = Astro.props;
 ---
 
 <section id="catalogo" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-  <div class="text-center mb-12 space-y-3">
-    <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-texto">
+  <div class="text-center mb-12 space-y-6">
+    <h2 class="font-serif text-3xl sm:text-6xl font-semibold text-texto">
       {titulo}
     </h2>
+    <p class="text-base sm:text-lg text-texto/80 font-normal">{text}</p>
     <div class="w-16 h-0.5 bg-rosa-oscuro mx-auto rounded-full"></div>
   </div>
 
