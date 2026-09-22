@@ -3,12 +3,44 @@ import { supabase } from '../lib/supabase';
 
 const pathname = new URL(Astro.url).pathname;
 
+// Estructura de navegación con subcategorías
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/monos', label: 'Moños' },
-  { href: '/vinchas', label: 'Vinchas' },
+  { 
+    href: '/monos', 
+    label: 'Moños',
+    subcategories: [
+      { href: '/monos/infantiles', label: 'Infantiles' },
+      { href: '/monos/bordados', label: 'Bordados' },
+      { href: '/monos/bordados-con-lazo', label: 'Bordados con Lazo' },
+      { href: '/monos/navidenos', label: 'Navideños' },
+      { href: '/monos/monos-de-comunion', label: 'Moños de comunion' },
+    ]
+  },
+  { 
+    href: '/vinchas', 
+    label: 'Vinchas',
+    subcategories: [
+      { href: '/vinchas/de-tela', label: 'De tela' },
+      { href: '/vinchas/vincha-escolar', label: 'Vincha Escolar' },
+      { href: '/vinchas/personalizadas', label: 'Personalizadas' },
+      { href: '/vinchas/vinchas-de-comunion', label: 'De comunion' },
+    ]
+  },
+  { 
+    href: '/scrunchies', 
+    label: 'Scrunchies',
+    subcategories: [
+      { href: '/scrunchies/scrunchies-escolares', label: 'Escolares' },
+      { href: '/scrunchies/con-lazo', label: 'Con Lazo' },
+      { href: '/scrunchies/velvet', label: 'Velvet' },
+      { href: '/scrunchies/saten', label: 'Saten' },
+    ]
+   },
+
   { href: '/hebillas', label: 'Hebillas' },
-  { href: '/scrunchies', label: 'Scrunchies' }
+  { href: '/llaveros', label: 'Llaveros' }
+
 ];
 
 // Cargamos productos para el buscador interactivo
@@ -42,18 +74,43 @@ const productosJson = JSON.stringify(productosData || []);
       <nav class="flex items-center gap-6 lg:gap-8">
         {navLinks.map((link) => {
           const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+          const hasSubcategories = link.subcategories && link.subcategories.length > 0;
+
           return (
-            <a
-              href={link.href}
-              class={`text-sm font-medium transition-colors duration-200 hover:text-rosa-oscuro relative py-1 ${
-                isActive ? 'text-rosa-oscuro font-semibold' : 'text-texto/80'
-              }`}
-            >
-              {link.label}
-              {isActive && (
-                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-rosa-oscuro rounded-full" />
+            <div class="relative group py-1">
+              <a
+                href={link.href}
+                class={`text-sm font-medium transition-colors duration-200 hover:text-rosa-oscuro inline-flex items-center gap-1 ${
+                  isActive ? 'text-rosa-oscuro font-semibold' : 'text-texto/80'
+                }`}
+              >
+                {link.label}
+                {hasSubcategories && (
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                )}
+                {isActive && (
+                  <span class="absolute bottom-0 left-0 w-full h-0.5 bg-rosa-oscuro rounded-full" />
+                )}
+              </a>
+
+              {/* Menú Desplegable Desktop */}
+              {hasSubcategories && (
+                <div class="absolute left-0 top-full pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out z-50">
+                  <div class="bg-crema/95 backdrop-blur-md rounded-2xl p-2 shadow-xl border border-rosa/30 space-y-1">
+                    {link.subcategories.map((sub) => (
+                      <a
+                        href={sub.href}
+                        class="block px-3 py-2 text-xs font-medium text-texto/80 hover:text-rosa-oscuro hover:bg-rosa/20 rounded-xl transition-colors"
+                      >
+                        {sub.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               )}
-            </a>
+            </div>
           );
         })}
       </nav>
@@ -125,15 +182,33 @@ const productosJson = JSON.stringify(productosData || []);
   <div id="mobile-menu" class="hidden md:hidden bg-crema/95 backdrop-blur-lg border-b border-rosa/30 px-4 pt-2 pb-6 space-y-1">
     {navLinks.map((link) => {
       const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+      const hasSubcategories = link.subcategories && link.subcategories.length > 0;
+
       return (
-        <a
-          href={link.href}
-          class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-            isActive ? 'bg-rosa/50 text-rosa-oscuro font-semibold' : 'text-texto hover:bg-rosa/20'
-          }`}
-        >
-          {link.label}
-        </a>
+        <div class="space-y-1">
+          <a
+            href={link.href}
+            class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+              isActive ? 'bg-rosa/50 text-rosa-oscuro font-semibold' : 'text-texto hover:bg-rosa/20'
+            }`}
+          >
+            {link.label}
+          </a>
+
+          {/* Subcategorías desplegadas para Mobile */}
+          {hasSubcategories && (
+            <div class="pl-4 space-y-1 border-l-2 border-rosa/30 ml-3">
+              {link.subcategories.map((sub) => (
+                <a
+                  href={sub.href}
+                  class="block px-3 py-1.5 rounded-md text-sm text-texto/70 hover:text-rosa-oscuro transition-colors"
+                >
+                  {sub.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       );
     })}
   </div>
@@ -166,7 +241,6 @@ const productosJson = JSON.stringify(productosData || []);
         </button>
       </div>
 
-      <!-- Botón para cerrar el modal -->
       <button 
         id="btn-close-search-mobile"
         type="button"
@@ -190,12 +264,10 @@ const productosJson = JSON.stringify(productosData || []);
   function initLiveSearch() {
     const productos = JSON.parse(productosJson || '[]');
 
-    // Elementos Desktop
     const inputDesktop = document.getElementById('search-input-desktop');
     const clearDesktop = document.getElementById('clear-search-desktop');
     const containerDesktop = document.getElementById('search-results-desktop');
 
-    // Elementos Mobile
     const btnOpenMobile = document.getElementById('btn-open-search-mobile');
     const btnCloseMobile = document.getElementById('btn-close-search-mobile');
     const modalMobile = document.getElementById('modal-search-mobile');
@@ -203,13 +275,11 @@ const productosJson = JSON.stringify(productosData || []);
     const clearMobile = document.getElementById('clear-search-mobile');
     const containerMobile = document.getElementById('search-results-mobile');
 
-    // Hamburguesa
     const buttonMenu = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const iconOpen = document.getElementById('icon-open');
     const iconClose = document.getElementById('icon-close');
 
-    // Toggle Menú Hamburguesa
     if (buttonMenu && menu && iconOpen && iconClose) {
       buttonMenu.addEventListener('click', () => {
         const isExpanded = buttonMenu.getAttribute('aria-expanded') === 'true';
@@ -220,7 +290,6 @@ const productosJson = JSON.stringify(productosData || []);
       });
     }
 
-    // Toggle Modal Mobile
     if (btnOpenMobile && modalMobile && inputMobile) {
       btnOpenMobile.addEventListener('click', () => {
         modalMobile.classList.remove('hidden');
@@ -234,7 +303,6 @@ const productosJson = JSON.stringify(productosData || []);
       });
     }
 
-    // Función de filtrado
     function buscar(query) {
       const q = query.trim().toLowerCase();
       if (!q) return [];
@@ -242,11 +310,11 @@ const productosJson = JSON.stringify(productosData || []);
         const nom = (p.nombre || '').toLowerCase();
         const desc = (p.descripcion || '').toLowerCase();
         const cat = (p.categoria || '').toLowerCase();
-        return nom.includes(q) || desc.includes(q) || cat.includes(q);
+        const sub = (p.subcategoria || '').toLowerCase();
+        return nom.includes(q) || desc.includes(q) || cat.includes(q) || sub.includes(q);
       });
     }
 
-    // Renderizar HTML de ítems
     function generarHTML(resultados, query) {
       if (!query.trim()) {
         return `<div class="p-4 text-center text-xs text-texto/60">Escribí el nombre de un producto para buscar...</div>`;
@@ -289,7 +357,6 @@ const productosJson = JSON.stringify(productosData || []);
       `;
     }
 
-    // Manejo de clicks en resultados
     function bindLinkClicks() {
       document.querySelectorAll('.search-item-link').forEach(link => {
         link.addEventListener('click', (e) => {
@@ -298,25 +365,17 @@ const productosJson = JSON.stringify(productosData || []);
 
           if (element) {
             e.preventDefault();
-
-            // Fuerza la aparicion de la card si estaba oculta con opacity-0
             element.classList.add('reveal');
-
-            // Scroll suave hacia la tarjeta
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            // Actualiza la URL con la ancla sin refrescar la página
             history.pushState(null, '', `/#${targetId}`);
           }
 
-          // Cerrar dropdowns/modales
           if (containerDesktop) containerDesktop.classList.add('hidden');
           if (modalMobile) modalMobile.classList.add('hidden');
         });
       });
     }
 
-    // Eventos Buscador Desktop
     if (inputDesktop && containerDesktop && clearDesktop) {
       inputDesktop.addEventListener('input', (e) => {
         const val = e.target.value;
@@ -348,7 +407,6 @@ const productosJson = JSON.stringify(productosData || []);
       });
     }
 
-    // Eventos Buscador Mobile
     if (inputMobile && containerMobile && clearMobile) {
       inputMobile.addEventListener('input', (e) => {
         const val = e.target.value;

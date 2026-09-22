@@ -2,57 +2,107 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import ProductGrid from '../components/ProductGrid.astro';
-import AboutMe from '../components/AboutMe.astro';
+import ProductCard from '../components/ProductCard.astro';
 import ContactForm from '../components/ContactForm.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import Footer from '../components/Footer.astro';
 import { supabase } from '../lib/supabase';
 import type { Producto } from '../types/producto';
 
-// Define las rutas estáticas válidas en tiempo de build consultando Supabase
 export async function getStaticPaths() {
-  // 1. Traemos todos los productos desde la base de datos
-  const { data, error } = await supabase
-    .from('productos')
-    .select('*');
-
+  const { data } = await supabase.from('productos').select('*');
   const productos: Producto[] = (data || []) as Producto[];
-  const categoriasValidas = [
-    { 
-      slug: 'monos', 
-      nombre: 'Moños Artesanales', 
-      descripcion: 'Explorá nuestra colección exclusiva de moños confeccionados a mano en telas seleccionadas.' 
-    },
-    { 
-      slug: 'vinchas', 
-      nombre: 'Vinchas Elegantes', 
-      descripcion: 'Descubrí nuestras vinchas acolchadas, trenzadas y con perlas diseñadas para un uso cómodo y chic.' 
-    },
-    { 
-      slug: 'hebillas', 
-      nombre: 'Hebillas y Clips', 
-      descripcion: 'Detalles delicados para sujetar tu pelo con elegancia y firmeza en cualquier ocasión.' 
-    },
-    { 
-      slug: 'scrunchies', 
-      nombre: 'Scrunchies', 
-      descripcion: 'Colección de scrunchies en telas suaves y colores vibrantes para complementar tu estilo.' 
-    }
-  ];
 
-  // 3. Mapeamos las rutas filtrando los productos de Supabase
-  return categoriasValidas.map((cat) => ({
-    params: { categoria: cat.slug },
-    props: { 
-      nombreCategoria: cat.nombre,
-      descripcionCategoria: cat.descripcion,
-      productosFiltrados: productos.filter((p) => p.categoria === cat.slug)
+  const categoriasInfo: Record<string, { nombre: string; descripcion: string }> = {
+    monos: {
+      nombre: 'Colección: Moños Artesanales',
+      descripcion: 'Descubrí nuestra variedad de moños hechos a mano con detalles delicados y únicos.'
+    },
+    vinchas: {
+      nombre: 'Colección: Vinchas',
+      descripcion: 'Vinchas elegantes y cómodas para cualquier ocasión.'
+    },
+    hebillas: {
+      nombre: 'Colección: Hebillas',
+      descripcion: 'Accesorios para el cabello diseñados para destacar tu estilo diario.'
+    },
+    scrunchies: {
+      nombre: 'Colección: Scrunchies',
+      descripcion: 'Scrunchies suaves y estilizados que cuidan tu cabello.'
+    },
+    llaveros: {
+      nombre: 'Colección: Llaveros',
+      descripcion: 'Llaveros artesanales con diseños únicos y funcionales.'
     }
-  }));
+
+  };
+
+  const categoriasValidas = ['monos', 'vinchas', 'hebillas', 'scrunchies', 'llaveros'];
+
+  return categoriasValidas.map((cat) => {
+    const info = categoriasInfo[cat] || {
+      nombre: `Colección: ${cat}`,
+      descripcion: `Explorá nuestros productos de ${cat}.`
+    };
+
+    const productosDeCat = productos.filter(
+      (p) => p.categoria?.trim().toLowerCase() === cat.toLowerCase()
+    );
+
+    // Agrupamos por subcategoría de forma segura
+    const gruposMap = new Map<string, Producto[]>();
+
+    productosDeCat.forEach((prod) => {
+      const sub = prod.subcategoria ? prod.subcategoria.trim().toLowerCase() : 'otros';
+      if (!gruposMap.has(sub)) {
+        gruposMap.set(sub, []);
+      }
+      gruposMap.get(sub)!.push(prod);
+    });
+
+    const secciones = Array.from(gruposMap.entries()).map(([slugSub, lista]) => ({
+      slugSub,
+      lista
+    }));
+
+    return {
+      params: { categoria: cat },
+      props: {
+        nombreCategoria: info.nombre,
+        descripcionCategoria: info.descripcion,
+        secciones
+      }
+    };
+  });
 }
 
-const { nombreCategoria, descripcionCategoria, productosFiltrados } = Astro.props;
+interface Props {
+  nombreCategoria: string;
+  descripcionCategoria: string;
+  secciones: Array<{
+    slugSub: string;
+    lista: Producto[];
+  }>;
+}
+
+const { nombreCategoria, descripcionCategoria, secciones } = Astro.props;
+
+const titulosSubcategorias: Record<string, string> = {
+  'infantiles': 'Moños Infantiles',
+  'bordados': 'Moños Bordados',
+  'bordados-con-lazo': 'Moños Bordados con Lazo',
+  'navidenos': 'Moños Navideños',
+  'monos-de-comunion': 'Moños de Comunión',
+  'de-tela': 'Vinchas de Tela',
+  'vincha-escolar': 'Vinchas Escolares',
+  'personalizadas': 'Vinchas Personalizadas',
+  'vinchas-de-comunion': 'Vinchas de Comunión',
+  'scrunchies-escolares': 'Scrunchies Escolares',
+  'scrunchies-con-lazo': 'Scrunchies con Lazo',
+  'velvet': 'Scrunchies Velvet',
+  'saten': 'Scrunchies de Satén',
+  'otros': 'Otros Diseños'
+};
 ---
 
 <Layout 
@@ -66,11 +116,59 @@ const { nombreCategoria, descripcionCategoria, productosFiltrados } = Astro.prop
       title={nombreCategoria}
       subtitle={descripcionCategoria}
     />
-    <ProductGrid 
-      productos={productosFiltrados} 
-      titulo={`Colección: ${nombreCategoria}`} 
-    />
-    <AboutMe />
+
+    <section class="py-12 bg-crema">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        {secciones.length === 0 ? (
+          <p class="text-center text-texto/60 text-base py-8">
+            No hay productos disponibles en esta categoría por el momento.
+          </p>
+        ) : (
+          secciones.map(({ slugSub, lista }) => {
+            const tituloSeccion = titulosSubcategorias[slugSub] || slugSub.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+
+            return (
+              <div class="space-y-6">
+                <!-- Título de la Subcategoría -->
+                <div class="border-b border-rosa/40 pb-3 flex items-center justify-between">
+                  <h2 class="font-serif text-2xl sm:text-3xl font-bold text-texto">
+                    {tituloSeccion}
+                  </h2>
+                  {slugSub !== 'otros' && (
+                    <a 
+                      href={`/${Astro.params.categoria}/${slugSub}`}
+                      class="text-xs sm:text-sm font-semibold text-rosa-oscuro hover:underline flex items-center gap-1 transition-all"
+                    >
+                      Ver todos
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+
+                <!-- Grilla de Tarjetas -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                  {lista.map((prod) => (
+                    <ProductCard 
+                      id={String(prod.id)}
+                      nombre={prod.nombre}
+                      descripcion={prod.descripcion || ''}
+                      categoria={prod.categoria}
+                      imagen={prod.imagen || ''}
+                      destacado={Boolean(prod.destacado)}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })
+        )}
+
+      </div>
+    </section>
+
     <ContactForm />
   </main>
   <WhatsAppButton />
