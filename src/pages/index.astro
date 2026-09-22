@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import HeroCarousel from '../components/HeroCarousel.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import AboutMe from '../components/AboutMe.astro';
 import ContactForm from '../components/ContactForm.astro';
@@ -25,6 +26,7 @@ const productos: Producto[] = (data || []) as Producto[];
   
   <main id="contenido-principal" class="flex-grow">
     <Hero />
+    <HeroCarousel productos={productos} />
     <ProductGrid 
       productos = {productos} 
       titulo="Nuestro Catálogo Completo" 

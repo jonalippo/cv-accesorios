@@ -1,4 +1,6 @@
 ---
+import { supabase } from '../lib/supabase';
+
 const pathname = new URL(Astro.url).pathname;
 
 const navLinks = [
@@ -8,12 +10,20 @@ const navLinks = [
   { href: '/hebillas', label: 'Hebillas' },
   { href: '/scrunchies', label: 'Scrunchies' }
 ];
+
+// Cargamos productos para el buscador interactivo
+const { data: productosData } = await supabase
+  .from('productos')
+  .select('*');
+
+const productosJson = JSON.stringify(productosData || []);
 ---
 
 <header id="main-header" class="sticky top-0 z-50 w-full transition-all duration-300 bg-rosa/30 backdrop-blur-md border-b border-rosa/30">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    
     <!-- Logo y Nombre -->
-    <a href="/" class="flex items-center gap-3 group focus:outline-none">
+    <a href="/" class="flex items-center gap-3 group focus:outline-none shrink-0">
       <img 
         src="/logo-cv.webp" 
         alt="CV Accesorios Logo" 
@@ -27,45 +37,92 @@ const navLinks = [
       </span>
     </a>
 
-    <!-- Navegación Desktop -->
-    <nav class="hidden md:flex items-center gap-8">
-      {navLinks.map((link) => {
-        const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
-        return (
-          <a
-            href={link.href}
-            class={`text-sm font-medium transition-colors duration-200 hover:text-rosa-oscuro relative py-1 ${
-              isActive ? 'text-rosa-oscuro font-semibold' : 'text-texto/80'
-            }`}
-          >
-            {link.label}
-            {isActive && (
-              <span class="absolute bottom-0 left-0 w-full h-0.5 bg-rosa-oscuro rounded-full" />
-            )}
-          </a>
-        );
-      })}
-    </nav>
+    <!-- Navegación Desktop + Buscador -->
+    <div class="hidden md:flex items-center gap-6 lg:gap-8">
+      <nav class="flex items-center gap-6 lg:gap-8">
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+          return (
+            <a
+              href={link.href}
+              class={`text-sm font-medium transition-colors duration-200 hover:text-rosa-oscuro relative py-1 ${
+                isActive ? 'text-rosa-oscuro font-semibold' : 'text-texto/80'
+              }`}
+            >
+              {link.label}
+              {isActive && (
+                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-rosa-oscuro rounded-full" />
+              )}
+            </a>
+          );
+        })}
+      </nav>
 
-    <!-- Botón Hamburguesa Mobile -->
-    <button
-      id="menu-toggle"
-      type="button"
-      aria-label="Abrir menú de navegación"
-      aria-expanded="false"
-      class="md:hidden p-2 rounded-lg text-texto hover:bg-rosa/30 focus:outline-none transition-colors"
-    >
-      <svg id="icon-open" class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-      <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
+      <!-- Input Buscador Desktop -->
+      <div class="relative">
+        <div class="relative w-44 lg:w-56">
+          <input
+            type="text"
+            id="search-input-desktop"
+            placeholder="Buscar producto..."
+            autocomplete="off"
+            class="w-full pl-9 pr-8 py-1.5 text-xs rounded-full bg-crema/80 border border-rosa/40 text-texto placeholder:text-texto/50 focus:outline-none focus:border-rosa-oscuro focus:ring-1 focus:ring-rosa-oscuro transition-all shadow-xs"
+          />
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-texto/60">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <button id="clear-search-desktop" class="hidden absolute inset-y-0 right-0 pr-2.5 items-center text-texto/40 hover:text-rosa-oscuro">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Desplegable Resultados Desktop -->
+        <div 
+          id="search-results-desktop" 
+          class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-crema/95 backdrop-blur-xl border border-rosa/40 rounded-2xl shadow-xl overflow-hidden z-50 max-h-[70vh] flex flex-col"
+        >
+          <!-- Contenido renderizado por JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones Mobile (Lupa + Menú Hamburguesa) -->
+    <div class="flex items-center gap-2 md:hidden ml-auto">
+      <button
+        id="btn-open-search-mobile"
+        type="button"
+        aria-label="Abrir buscador"
+        class="p-2 rounded-full text-texto hover:bg-rosa/30 transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </button>
+
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        class="p-2 rounded-lg text-texto hover:bg-rosa/30 focus:outline-none transition-colors"
+      >
+        <svg id="icon-open" class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
   </div>
 
-  <!-- Menú Mobile desplegable -->
-  <div id="mobile-menu" class="hidden md:hidden bg-crema/95 backdrop-blur-lg border-b border-rosa/30 px-4 pt-2 pb-6 space-y-3">
+  <!-- Menú Mobile Hamburguesa clásico -->
+  <div id="mobile-menu" class="hidden md:hidden bg-crema/95 backdrop-blur-lg border-b border-rosa/30 px-4 pt-2 pb-6 space-y-1">
     {navLinks.map((link) => {
       const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
       return (
@@ -82,25 +139,242 @@ const navLinks = [
   </div>
 </header>
 
-<script>
-  function initHeader() {
-    const button = document.getElementById('menu-toggle');
+<!-- MODAL DE BÚSQUEDA PARA MOBILE -->
+<div 
+  id="modal-search-mobile" 
+  class="fixed inset-0 z-[60] hidden bg-texto/40 backdrop-blur-sm transition-opacity duration-300 md:hidden flex flex-col justify-start"
+>
+  <div class="bg-crema/95 border-b border-rosa/40 p-4 shadow-xl rounded-b-3xl space-y-3">
+    <div class="flex items-center gap-2">
+      <div class="relative flex-1">
+        <input
+          type="text"
+          id="search-input-mobile"
+          placeholder="¿Qué producto estás buscando?"
+          autocomplete="off"
+          class="w-full pl-10 pr-8 py-2.5 text-sm rounded-full bg-crema border border-rosa/50 text-texto placeholder:text-texto/50 focus:outline-none focus:border-rosa-oscuro focus:ring-2 focus:ring-rosa-oscuro/20 shadow-inner"
+        />
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-texto/60">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <button id="clear-search-mobile" class="hidden absolute inset-y-0 right-0 pr-3 items-center text-texto/40 hover:text-rosa-oscuro">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Botón para cerrar el modal -->
+      <button 
+        id="btn-close-search-mobile"
+        type="button"
+        class="px-3 py-2 text-xs font-semibold text-rosa-oscuro hover:text-texto transition-colors shrink-0"
+      >
+        Cerrar
+      </button>
+    </div>
+
+    <!-- Resultados en Mobile -->
+    <div 
+      id="search-results-mobile" 
+      class="max-h-[65vh] overflow-y-auto divide-y divide-rosa/20 rounded-2xl bg-crema/60 border border-rosa/20"
+    >
+      <!-- Se puebla con JS -->
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ productosJson }}>
+  function initLiveSearch() {
+    const productos = JSON.parse(productosJson || '[]');
+
+    // Elementos Desktop
+    const inputDesktop = document.getElementById('search-input-desktop');
+    const clearDesktop = document.getElementById('clear-search-desktop');
+    const containerDesktop = document.getElementById('search-results-desktop');
+
+    // Elementos Mobile
+    const btnOpenMobile = document.getElementById('btn-open-search-mobile');
+    const btnCloseMobile = document.getElementById('btn-close-search-mobile');
+    const modalMobile = document.getElementById('modal-search-mobile');
+    const inputMobile = document.getElementById('search-input-mobile');
+    const clearMobile = document.getElementById('clear-search-mobile');
+    const containerMobile = document.getElementById('search-results-mobile');
+
+    // Hamburguesa
+    const buttonMenu = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const iconOpen = document.getElementById('icon-open');
     const iconClose = document.getElementById('icon-close');
 
-    if (button && menu && iconOpen && iconClose) {
-      button.addEventListener('click', () => {
-        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-        button.setAttribute('aria-expanded', (!isExpanded).toString());
-        
+    // Toggle Menú Hamburguesa
+    if (buttonMenu && menu && iconOpen && iconClose) {
+      buttonMenu.addEventListener('click', () => {
+        const isExpanded = buttonMenu.getAttribute('aria-expanded') === 'true';
+        buttonMenu.setAttribute('aria-expanded', (!isExpanded).toString());
         menu.classList.toggle('hidden');
         iconOpen.classList.toggle('hidden');
         iconClose.classList.toggle('hidden');
       });
     }
+
+    // Toggle Modal Mobile
+    if (btnOpenMobile && modalMobile && inputMobile) {
+      btnOpenMobile.addEventListener('click', () => {
+        modalMobile.classList.remove('hidden');
+        setTimeout(() => inputMobile.focus(), 100);
+      });
+    }
+
+    if (btnCloseMobile && modalMobile) {
+      btnCloseMobile.addEventListener('click', () => {
+        modalMobile.classList.add('hidden');
+      });
+    }
+
+    // Función de filtrado
+    function buscar(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return productos.filter(p => {
+        const nom = (p.nombre || '').toLowerCase();
+        const desc = (p.descripcion || '').toLowerCase();
+        const cat = (p.categoria || '').toLowerCase();
+        return nom.includes(q) || desc.includes(q) || cat.includes(q);
+      });
+    }
+
+    // Renderizar HTML de ítems
+    function generarHTML(resultados, query) {
+      if (!query.trim()) {
+        return `<div class="p-4 text-center text-xs text-texto/60">Escribí el nombre de un producto para buscar...</div>`;
+      }
+      if (resultados.length === 0) {
+        return `
+          <div class="p-6 text-center space-y-1">
+            <p class="text-sm font-semibold text-texto">Sin resultados para "${query}"</p>
+            <p class="text-xs text-texto/60">Probá con moño, vincha, hebilla o scrunchie.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="p-2 space-y-1">
+          <div class="px-3 py-1.5 text-[10px] uppercase font-bold text-rosa-oscuro tracking-wider">
+            ${resultados.length} ${resultados.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
+          </div>
+          ${resultados.map(p => {
+            const precioStr = p.precio ? `$${p.precio.toLocaleString('es-AR')}` : '';
+
+            return `
+              <a 
+                href="/#producto-${p.id}" 
+                data-product-id="producto-${p.id}"
+                class="flex items-center gap-3 p-2 rounded-xl hover:bg-rosa/20 transition-colors group search-item-link"
+              >
+                <div class="w-12 h-12 rounded-lg bg-rosa/20 overflow-hidden shrink-0 border border-rosa/30">
+                  <img src="${p.imagen}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='/logo-cv.webp'" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <span class="text-[9px] uppercase font-bold text-rosa-oscuro tracking-wider block">${p.categoria || ''}</span>
+                  <h4 class="text-xs font-semibold text-texto truncate group-hover:text-rosa-oscuro transition-colors">${p.nombre}</h4>${p.descripcion ? `<p class="text-[11px] text-texto/60 truncate">${p.descripcion}</p>` : ''}
+                </div>
+                ${precioStr ? `<span class="text-xs font-bold text-texto shrink-0 pl-1">${precioStr}</span>` : ''}
+              </a>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // Manejo de clicks en resultados
+    function bindLinkClicks() {
+      document.querySelectorAll('.search-item-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const targetId = link.getAttribute('data-product-id');
+          const element = targetId ? document.getElementById(targetId) : null;
+
+          if (element) {
+            e.preventDefault();
+
+            // Fuerza la aparicion de la card si estaba oculta con opacity-0
+            element.classList.add('reveal');
+
+            // Scroll suave hacia la tarjeta
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Actualiza la URL con la ancla sin refrescar la página
+            history.pushState(null, '', `/#${targetId}`);
+          }
+
+          // Cerrar dropdowns/modales
+          if (containerDesktop) containerDesktop.classList.add('hidden');
+          if (modalMobile) modalMobile.classList.add('hidden');
+        });
+      });
+    }
+
+    // Eventos Buscador Desktop
+    if (inputDesktop && containerDesktop && clearDesktop) {
+      inputDesktop.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.length > 0) {
+          clearDesktop.classList.remove('hidden');
+          clearDesktop.classList.add('flex');
+          containerDesktop.classList.remove('hidden');
+        } else {
+          clearDesktop.classList.add('hidden');
+          clearDesktop.classList.remove('flex');
+          containerDesktop.classList.add('hidden');
+        }
+        const res = buscar(val);
+        containerDesktop.innerHTML = generarHTML(res, val);
+        bindLinkClicks();
+      });
+
+      clearDesktop.addEventListener('click', () => {
+        inputDesktop.value = '';
+        clearDesktop.classList.add('hidden');
+        containerDesktop.classList.add('hidden');
+        inputDesktop.focus();
+      });
+
+      document.addEventListener('click', (ev) => {
+        if (!inputDesktop.contains(ev.target) && !containerDesktop.contains(ev.target)) {
+          containerDesktop.classList.add('hidden');
+        }
+      });
+    }
+
+    // Eventos Buscador Mobile
+    if (inputMobile && containerMobile && clearMobile) {
+      inputMobile.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.length > 0) {
+          clearMobile.classList.remove('hidden');
+          clearMobile.classList.add('flex');
+        } else {
+          clearMobile.classList.add('hidden');
+          clearMobile.classList.remove('flex');
+        }
+        const res = buscar(val);
+        containerMobile.innerHTML = generarHTML(res, val);
+        bindLinkClicks();
+      });
+
+      clearMobile.addEventListener('click', () => {
+        inputMobile.value = '';
+        clearMobile.classList.add('hidden');
+        containerMobile.innerHTML = generarHTML([], '');
+        inputMobile.focus();
+      });
+
+      containerMobile.innerHTML = generarHTML([], '');
+    }
   }
 
-  initHeader();
-  document.addEventListener('astro:page-load', initHeader);
+  initLiveSearch();
+  document.addEventListener('astro:page-load', initLiveSearch);
 </script>
