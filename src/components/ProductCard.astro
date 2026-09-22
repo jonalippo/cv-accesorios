@@ -8,23 +8,34 @@ interface Props {
   destacado?: boolean;
 }
 
-const { nombre, descripcion,imagen } = Astro.props;
+const { nombre, descripcion, imagen } = Astro.props;
 const igDirectUrl = "https://ig.me/m/c.v.accesorios";
 const igFallbackUrl = "https://instagram.com/c.v.accesorios";
 ---
 
 <article class="product-card opacity-0 translate-y-8 bg-crema rounded-2xl overflow-hidden border border-rosa/40 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col h-full group">
 
-  <div class="relative aspect-square w-full overflow-hidden bg-rosa/20">
+  <!-- Imagen interactiva que abre el modal -->
+  <div 
+    class="relative aspect-square w-full overflow-hidden bg-rosa/20 cursor-pointer group/img"
+    data-open-modal
+    data-src={imagen}
+    data-title={nombre}
+    title=""
+  >
     <img 
       src={imagen} 
       alt={nombre} 
       width="400" 
       height="400" 
       loading="lazy" 
-      class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300 ease-out"
+      class="w-full h-full object-cover object-center group-hover/img:scale-105 transition-transform duration-300 ease-out"
       onerror="this.src='https://via.placeholder.com/400x400/F7D6DF/4A3F44?text=CV+Accesorios'"
     />
+    <!-- Indicador visual al pasar el mouse -->
+    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end justify-end p-3 ">
+      <span class="bg-crema text-rosa-oscuro text-xs px-3 py-1.5 rounded-full shadow font-medium">Ampliar</span>
+    </div>
   </div>
 
   <div class="p-5 flex flex-col flex-grow justify-between gap-4">
@@ -37,7 +48,7 @@ const igFallbackUrl = "https://instagram.com/c.v.accesorios";
       </p>
     </div>
 
-    <div class="pt-2 border-t border-rosa/20 flex items-center justify-between mt-auto">
+    <div class="pt-2 border-t border-rosa/20 flex items-center justify-center mt-auto">
       <a
         href={igDirectUrl}
         target="_blank"
@@ -54,6 +65,31 @@ const igFallbackUrl = "https://instagram.com/c.v.accesorios";
   </div>
 </article>
 
+<!-- Estructura del Modal para Previsualización -->
+<dialog id="image-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex-col items-center justify-center p-4 w-full h-full border-0 max-w-none max-h-none m-0">
+  <div class="relative max-w-3xl w-full flex flex-col items-center">
+    <!-- Botón de Cerrar -->
+    <button 
+      id="close-modal" 
+      class="absolute -top-12 right-0 text-crema hover:text-rosa text-3xl font-bold p-2 focus:outline-none transition-colors"
+      aria-label="Cerrar modal"
+    >
+      ✕
+    </button>
+    
+    <!-- Imagen ampliada -->
+    <img 
+      id="modal-img" 
+      src="" 
+      alt="" 
+      class="max-h-[80vh] w-auto max-w-full object-contain rounded-2xl border border-crema/20 shadow-2xl"
+    />
+    
+    <!-- Título en el modal -->
+    <p id="modal-title" class="text-crema font-serif text-lg text-center mt-4 font-semibold tracking-wide"></p>
+  </div>
+</dialog>
+
 <style>
   /* Clase activada dinámicamente por IntersectionObserver */
   .product-card.reveal {
@@ -61,3 +97,54 @@ const igFallbackUrl = "https://instagram.com/c.v.accesorios";
     transform: translateY(0);
   }
 </style>
+
+<script>
+  function setupModal() {
+    const modal = document.getElementById('image-modal') as HTMLDialogElement | null;
+    const modalImg = document.getElementById('modal-img') as HTMLImageElement | null;
+    const modalTitle = document.getElementById('modal-title');
+    const closeBtn = document.getElementById('close-modal');
+
+    if (!modal || !modalImg || !modalTitle) return;
+
+    // Abrir modal al hacer clic en una imagen
+    document.querySelectorAll('[data-open-modal]').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const src = trigger.getAttribute('data-src');
+        const title = trigger.getAttribute('data-title');
+
+        if (src && modalImg) modalImg.src = src;
+        if (title && modalTitle) modalTitle.textContent = title;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden'; // Bloquear scroll del fondo
+      });
+    });
+
+    // Función para cerrar modal
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = ''; // Restaurar scroll
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+
+    // Cerrar al hacer clic en el fondo oscuro
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Cerrar con la tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
+
+  // Inicializar en la primera carga y en navegaciones de Astro
+  setupModal();
+  document.addEventListener('astro:page-load', setupModal);
+</script>
