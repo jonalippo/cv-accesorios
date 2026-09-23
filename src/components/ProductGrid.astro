@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { productos, titulo = "Productos", text } = Astro.props;
+const productosOrdenados = [...productos].sort((a, b) => Number(b.id) - Number(a.id)) .slice(0, 12);
 ---
 
 <section id="catalogo" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -22,14 +23,13 @@ const { productos, titulo = "Productos", text } = Astro.props;
 
   {productos.length > 0 ? (
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-      {productos.map((prod) => (
+      {productosOrdenados.map((prod) => (
         <ProductCard
           id={prod.id}
           nombre={prod.nombre}
           descripcion={prod.descripcion}
           categoria={prod.categoria}
           imagen={prod.imagen}
-          destacado={prod.destacado}
         />
       ))}
     </div>

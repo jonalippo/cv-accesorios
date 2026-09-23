@@ -13,99 +13,138 @@ export async function getStaticPaths() {
   const { data } = await supabase.from('productos').select('*');
   const productos: Producto[] = (data || []) as Producto[];
 
-  const subcategoriasInfo: Record<string, { nombre: string; descripcion: string }> = {
+  // Definición con los slugs exactos usados en el Header
+  const subcategoriasInfo: Record<string, { nombre: string; descripcion: string; imagen: string; categoriaPadre: string }> = {
     'infantiles': {
+      categoriaPadre: 'monos',
       nombre: 'Moños Infantiles',
-      descripcion: 'Diseños tiernos y seguros creados especialmente para las más pequeñas.'
+      descripcion: 'Diseños tiernos y seguros creados especialmente para las más pequeñas.',
+      imagen: '/Moños (63).JPG'
     },
     'bordados': {
+      categoriaPadre: 'monos',
       nombre: 'Moños Bordados',
-      descripcion: 'Moños con detalles bordados a mano, perfectos para un look elegante.'
+      descripcion: 'Moños con detalles bordados a mano, perfectos para un look elegante.',
+      imagen: '/Moños (63).JPG'
     },
     'bordados-con-lazo': {
+      categoriaPadre: 'monos',
       nombre: 'Moños Bordados con Lazo',
-      descripcion: 'Moños que combinan bordados delicados con la elegancia de un lazo.'
+      descripcion: 'Moños que combinan bordados delicados con la elegancia de un lazo.',
+      imagen: '/Moños (63).JPG'
     },
     'navidenos': {
+      categoriaPadre: 'monos',
       nombre: 'Moños Navideños',
-      descripcion: 'Diseños festivos y alegres para celebrar la temporada navideña con estilo.'
+      descripcion: 'Diseños festivos y alegres para celebrar la temporada navideña con estilo.',
+      imagen: '/Moños (63).JPG'
     },
     'monos-de-comunion': {
+      categoriaPadre: 'monos',
       nombre: 'Moños de Comunión',
-      descripcion: 'Elegantes moños diseñados para complementar los atuendos de comunión.'
+      descripcion: 'Elegantes moños diseñados para complementar los atuendos de comunión.',
+      imagen: '/Moños (63).JPG'
     },
     'lisos': {
+      categoriaPadre: 'monos',
       nombre: 'Moños Lisos',
-      descripcion: 'Moños de colores sólidos, perfectos para cualquier ocasión.'
+      descripcion: 'Moños de colores sólidos, perfectos para cualquier ocasión.',
+      imagen: '/Moños (63).JPG'
     },
     'full-brillo': {
+      categoriaPadre: 'monos',
       nombre: 'Moños Full Brillo',
-      descripcion: 'Moños que brillan con estilo, ideales para destacar en cualquier evento.'
+      descripcion: 'Moños que brillan con estilo, ideales para destacar en cualquier evento.',
+      imagen: '/Moños (63).JPG'
+    },
+    'monos-escolares': {
+      categoriaPadre: 'monos',
+      nombre: 'Moños Escolares',
+      descripcion: 'Moños resistentes y cómodos, ideales para el uso diario en la escuela.',
+      imagen: '/Moños (63).JPG'
     },
     'de-tela': {
+      categoriaPadre: 'vinchas',
       nombre: 'Vinchas de Tela',
-      descripcion: 'Vinchas confeccionadas con telas de alta calidad para un acabado perfecto.'
+      descripcion: 'Vinchas confeccionadas con telas de alta calidad para un acabado perfecto.',
+      imagen: '/Moños (63).JPG'
     },
     'vincha-escolar': {
+      categoriaPadre: 'vinchas',
       nombre: 'Vinchas Escolares',
-      descripcion: 'Vinchas resistentes y cómodas, ideales para el uso diario en la escuela.'
+      descripcion: 'Vinchas resistentes y cómodas, ideales para el uso diario en la escuela.',
+      imagen: '/Moños (63).JPG'
     },
     'personalizadas': {
+      categoriaPadre: 'vinchas',
       nombre: 'Vinchas Personalizadas',
-      descripcion: 'Vinchas que puedes personalizar con tu estilo y preferencias únicas.'
+      descripcion: 'Vinchas que puedes personalizar con tu estilo y preferencias únicas.',
+      imagen: '/Moños (63).JPG'
     },
     'vinchas-de-comunion': {
+      categoriaPadre: 'vinchas',
       nombre: 'Vinchas de Comunión',
-      descripcion: 'Vinchas elegantes y delicadas, perfectas para complementar los atuendos de comunión.'
+      descripcion: 'Vinchas elegantes y delicadas, perfectas para complementar los atuendos de comunión.',
+      imagen: '/Moños (63).JPG'
     },
     'scrunchies-escolares': {
+      categoriaPadre: 'scrunchies',
       nombre: 'Scrunchies Escolares',
-      descripcion: 'Scrunchies resistentes y cómodos, ideales para el uso diario en la escuela.'
+      descripcion: 'Scrunchies resistentes y cómodos, ideales para el uso diario en la escuela.',
+      imagen: '/Moños (63).JPG'
     },
     'con-lazo': {
+      categoriaPadre: 'scrunchies',
       nombre: 'Scrunchies con Lazo',
-      descripcion: 'Scrunchies que combinan la suavidad de la tela con la elegancia de un lazo.'
+      descripcion: 'Scrunchies que combinan la suavidad de la tela con la elegancia de un lazo.',
+      imagen: '/Moños (63).JPG'
     },
     'velvet': {
+      categoriaPadre: 'scrunchies',
       nombre: 'Scrunchies Velvet',
-      descripcion: 'Scrunchies Velvet, perfectas para un look elegante y cómodo.'
+      descripcion: 'Scrunchies Velvet, perfectas para un look elegante y cómodo.',
+      imagen: '/Moños (63).JPG'
     },
     'saten': {
+      categoriaPadre: 'scrunchies',
       nombre: 'Scrunchies de Satén',
-      descripcion: 'Scrunchies de satén, suaves y elegantes, ideales para cualquier ocasión.'
-    },
+      descripcion: 'Scrunchies de satén, suaves y elegantes, ideales para cualquier ocasión.',
+      imagen: '/Moños (63).JPG'
+    }
   };
 
-  const categoriasValidas = ['monos', 'vinchas', 'hebillas', 'scrunchies', 'llaveros'];
-  const paths = [];
+  // Función auxiliar para convertir textos a formato slug
+  const toSlug = (str: string) =>
+    str
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9 -]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
 
-  for (const cat of categoriasValidas) {
-    const productosDeCat = productos.filter((p) => p.categoria === cat);
-    // Obtenemos todas las subcategorías únicas presentes en la BD para esta categoría
-    const subcats = [...new Set(productosDeCat.map((p) => p.subcategoria).filter(Boolean))];
+  return Object.entries(subcategoriasInfo).map(([subSlug, info]) => {
+    // Filtrar productos por categoría y subcategoría de forma flexible
+    const productosFiltrados = productos.filter((p) => {
+      const catCoincide = toSlug(p.categoria || '') === toSlug(info.categoriaPadre);
+      const subCoincide = toSlug(p.subcategoria || '') === subSlug;
+      return catCoincide && subCoincide;
+    });
 
-    for (const sub of subcats) {
-      if (!sub) continue;
-      const info = subcategoriasInfo[sub] || {
-        nombre: `${sub.replace('-', ' ')}`,
-        descripcion: `Explorá nuestra selección de ${sub.replace('-', ' ')}.`
-      };
-
-      paths.push({
-        params: { categoria: cat, subcategoria: sub },
-        props: {
-          nombreCategoria: info.nombre,
-          descripcionCategoria: info.descripcion,
-          productosFiltrados: productosDeCat.filter((p) => p.subcategoria === sub)
-        }
-      });
-    }
-  }
-
-  return paths;
+    return {
+      params: { categoria: info.categoriaPadre, subcategoria: subSlug },
+      props: {
+        nombreCategoria: info.nombre,
+        descripcionCategoria: info.descripcion,
+        imagenCategoria: info.imagen,
+        productosFiltrados
+      }
+    };
+  });
 }
 
-const { nombreCategoria, descripcionCategoria, productosFiltrados } = Astro.props;
+const { nombreCategoria, descripcionCategoria, imagenCategoria, productosFiltrados } = Astro.props;
 ---
 
 <Layout 
@@ -118,6 +157,7 @@ const { nombreCategoria, descripcionCategoria, productosFiltrados } = Astro.prop
     <Hero 
       title={nombreCategoria}
       subtitle={descripcionCategoria}
+      imagen={imagenCategoria}
     />
     <ProductGrid 
       productos={productosFiltrados} 

@@ -13,36 +13,42 @@ export async function getStaticPaths() {
   const { data } = await supabase.from('productos').select('*');
   const productos: Producto[] = (data || []) as Producto[];
 
-  const categoriasInfo: Record<string, { nombre: string; descripcion: string }> = {
+  const categoriasInfo: Record<string, { nombre: string; descripcion: string; imagen:string }> = {
     monos: {
       nombre: 'Colección: Moños Artesanales',
-      descripcion: 'Descubrí nuestra variedad de moños hechos a mano con detalles delicados y únicos.'
+      descripcion: 'Descubrí nuestra variedad de moños hechos a mano con detalles delicados y únicos.',
+      imagen: '/Moños (34).JPG'
     },
     vinchas: {
       nombre: 'Colección: Vinchas',
-      descripcion: 'Vinchas elegantes y cómodas para cualquier ocasión.'
+      descripcion: 'Vinchas elegantes y cómodas para cualquier ocasión.',
+      imagen: '/Vinchas.PNG'
     },
     hebillas: {
       nombre: 'Colección: Hebillas',
-      descripcion: 'Accesorios para el cabello diseñados para destacar tu estilo diario.'
+      descripcion: 'Accesorios para el cabello diseñados para destacar tu estilo diario.',
+      imagen: '/hebillas.png'
     },
     scrunchies: {
       nombre: 'Colección: Scrunchies',
-      descripcion: 'Scrunchies suaves y estilizados que cuidan tu cabello.'
+      descripcion: 'Scrunchies suaves y estilizados que cuidan tu cabello.',
+      imagen: '/scrunchies.png'
     },
-    llaveros: {
-      nombre: 'Colección: Llaveros',
-      descripcion: 'Llaveros artesanales con diseños únicos y funcionales.'
+    llaverosYMas: {
+      nombre: 'Colección: Llaveros y Más',
+      descripcion: 'Llaveros y bordados artesanales con diseños únicos y funcionales.',
+      imagen: '/AlpargataBordada.png'
     }
 
   };
 
-  const categoriasValidas = ['monos', 'vinchas', 'hebillas', 'scrunchies', 'llaveros'];
+  const categoriasValidas = ['monos', 'vinchas', 'hebillas', 'scrunchies', 'llaverosYMas'];
 
   return categoriasValidas.map((cat) => {
     const info = categoriasInfo[cat] || {
       nombre: `Colección: ${cat}`,
-      descripcion: `Explorá nuestros productos de ${cat}.`
+      descripcion: `Explorá nuestros productos de ${cat}.`,
+      imagen: '/moños-hero.jpg'
     };
 
     const productosDeCat = productos.filter(
@@ -70,6 +76,7 @@ export async function getStaticPaths() {
       props: {
         nombreCategoria: info.nombre,
         descripcionCategoria: info.descripcion,
+        imagenCategoria: info.imagen,
         secciones
       }
     };
@@ -79,13 +86,14 @@ export async function getStaticPaths() {
 interface Props {
   nombreCategoria: string;
   descripcionCategoria: string;
+  imagenCategoria: string;
   secciones: Array<{
     slugSub: string;
     lista: Producto[];
   }>;
 }
 
-const { nombreCategoria, descripcionCategoria, secciones } = Astro.props;
+const { nombreCategoria, descripcionCategoria, imagenCategoria, secciones } = Astro.props;
 
 const titulosSubcategorias: Record<string, string> = {
   'infantiles': 'Moños Infantiles',
@@ -95,6 +103,7 @@ const titulosSubcategorias: Record<string, string> = {
   'monos-de-comunion': 'Moños de Comunión',
   'lisos': 'Moños Lisos',
   'full-brillo': 'Moños Full Brillo',
+  'monos-escolares': 'Moños Escolares',
   'de-tela': 'Vinchas de Tela',
   'vincha-escolar': 'Vinchas Escolares',
   'personalizadas': 'Vinchas Personalizadas',
@@ -117,6 +126,7 @@ const titulosSubcategorias: Record<string, string> = {
     <Hero 
       title={nombreCategoria}
       subtitle={descripcionCategoria}
+      imagen={imagenCategoria}
     />
 
     <section class="py-12 bg-crema">
